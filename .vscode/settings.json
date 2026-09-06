@@ -1,0 +1,12 @@
+{
+  // Format Luau on save with the rokit-pinned StyLua (stylua.toml at root).
+  "editor.formatOnSave": true,
+  "[luau]": {
+    "editor.defaultFormatter": "JohnnyMorganz.stylua",
+    "editor.formatOnSave": true
+  },
+  // Prefer the PATH binary (rokit shims) over the extension-bundled one.
+  "stylua.searchBinaryInPATH": true,
+  // Keep the typechecker fed: autogenerate the Rojo sourcemap for the IDE.
+  "luau-lsp.sourcemap.autogenerate": true
+}

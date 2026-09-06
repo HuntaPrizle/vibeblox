@@ -1,0 +1,5 @@
+[tools]
+rojo = "rojo-rbx/rojo@7.7.0"
+lune = "lune-org/lune@0.10.5"
+stylua = "johnnymorganz/stylua@2.5.2"
+luau-lsp = "johnnymorganz/luau-lsp@1.69.0"

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "Roblox_Studio": {
+      "type": "local",
+      "command": ["cmd.exe", "/c", "\"%LOCALAPPDATA%\\Roblox\\mcp.bat\""],
+      "enabled": true
+    }
+  },
+  "formatter": {
+    "stylua": {
+      "command": ["stylua", "$FILE"],
+      "extensions": [".luau", ".lua"]
+    }
+  },
+  "lsp": {
+    "luau": {
+      "command": ["luau-lsp", "serve", "--stdio"],
+      "extensions": [".luau", ".lua"]
+    }
+  }
+}

@@ -1,0 +1,11 @@
+#!/bin/sh
+# Local fast gate (~0.3s): formatting + unit tests.
+# Full gate (analyze, build) runs via /check and CI.
+# Enable once per clone: git config core.hooksPath .githooks
+set -e
+stylua --check src/
+if ! lune run tests/run.luau > /tmp/lune-precommit.log 2>&1; then
+	tail -20 /tmp/lune-precommit.log
+	exit 1
+fi
+echo "pre-commit: stylua + lune OK"
