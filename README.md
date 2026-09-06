@@ -3,9 +3,11 @@
 All the boring setup is done. Follow the steps once, then just tell your
 AI agent what to build.
 
-> New game? Replace every `MYGAME` with your game's name, fill in the
-> "Game" section of `AGENTS.md`, set `DataStoreName` in
-> `src/ReplicatedStorage/Config.luau` - then delete this box.
+> New game? First point this clone at your own repo (`git remote remove
+> origin`, then add yours - pushes go there, not back here). Replace every
+> `MYGAME` with your game's name, fill in the "Game" section of `AGENTS.md`,
+> set `DataStoreName` in `src/ReplicatedStorage/Config.luau` - then delete
+> this box.
 
 ## Setup (once)
 
@@ -49,7 +51,7 @@ run in CI; `/check` runs them in opencode):
 lune run tests/run.luau
 rojo sourcemap default.project.json -o sourcemap.json
 luau-lsp analyze --sourcemap sourcemap.json "--definitions:typedefs/globalTypes.PluginSecurity.d.luau" src/
-stylua --check src/
+stylua --check src/ tests/
 rojo build -o game.rbxlx
 ```
 

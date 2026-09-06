@@ -17,7 +17,7 @@ Rojo project (`default.project.json`) + Luau strict. Studio MCP `Roblox_Studio` 
   - `lune run tests/run.luau`
   - `rojo sourcemap default.project.json -o sourcemap.json`
   - `luau-lsp analyze --sourcemap sourcemap.json "--definitions:typedefs/globalTypes.PluginSecurity.d.luau" src/` (quote the `--definitions:...` arg in PowerShell)
-  - `stylua --check src/`
+  - `stylua --check src/ tests/`
   - `rojo build -o game.rbxlx` must succeed.
 - Never hallucinate APIs. No `CFrame.fromComponents`.
 - luau-lsp strict quirks: `require` must be top-level static (`local m = Service:WaitForChild("X"); local M = require(m)`) so the analyzer resolves it; never index `{ [Union]: T }` tables with literals (use arrays + lookup fn); never compare `.Parent` to nil directly (use an `any`-hop helper); narrowing only sticks on never-reassigned locals - re-lookup into a fresh local + `assert(x ~= nil)` instead of refining a reassigned one; `pcall(f)` where `f` returns nothing yields only a boolean (don't destructure two values); forward-declare locals used before definition (`local f: (Player) -> ()`, then `function f(...)`).

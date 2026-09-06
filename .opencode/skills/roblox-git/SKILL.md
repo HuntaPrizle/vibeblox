@@ -13,6 +13,7 @@ description: Use when committing, reviewing history, or connecting this repo to 
   needs it on fresh checkouts.
 - Message style: `feat:`, `fix:`, `test:`, `chore:` + imperative summary.
   Identity is repo-local (`hunta`); don't touch global git config.
-- No push/PR flow yet - the repo has no remote. When the user wants
-  GitHub: create the repo, add the remote, push `main`, then use `gh` for
-  PRs. Don't commit, push, or open PRs unasked.
+- New games start as clones of the template: `origin` still points at the
+  template repo. Repoint it first (`git remote remove origin`, create your
+  own repo, add the remote, push `main`), then use `gh` for PRs.
+  Don't commit, push, or open PRs unasked.
