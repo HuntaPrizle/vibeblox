@@ -19,6 +19,10 @@ Roblox Studio MCP (`opencode.json`); git `src/` stays source of truth.
 3. Open the place in Roblox Studio with the Rojo plugin installed.
 4. `rojo serve .` (port `34872`), then press **Connect** in the Rojo plugin
    panel. Every save syncs into the session in ~1s — just press Play.
+5. For AI sessions: the Studio MCP bridge (`%LOCALAPPDATA%\Roblox\mcp.bat`,
+   wired via `opencode.json`). In Studio check
+   `Assistant → ⋯ → Manage MCP Servers` (green + client count). Restart
+   opencode after any config change — it loads once at startup.
 
 ## Dev loop
 
