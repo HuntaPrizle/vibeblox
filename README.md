@@ -52,3 +52,9 @@ All five must pass after each change. Same steps run in CI.
 File -> Publish in Studio, or Open Cloud
 `universes/v1/$UNIVERSE/places/$PLACE/versions?versionType=Published`
 with `universe-places:write`.
+
+## Other AI harnesses
+
+`HARNESS.md` is a first-run bootstrap: any harness (Claude Code, Cursor,
+…) self-configures MCP, skills, and `/check` from this repo's universal
+sources. Point it at that file.
