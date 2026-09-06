@@ -16,7 +16,7 @@ jobs:
         uses: paradoxum-games/setup-rokit@v3
         with:
           cache: true
-      # NB: no separate `rokit install` — setup-rokit already installs
+      # NB: no separate `rokit install` - setup-rokit already installs
       # all rokit.toml tools (it passes --no-trust-check internally).
       - run: lune run tests/run.luau
       - run: rojo sourcemap default.project.json -o sourcemap.json

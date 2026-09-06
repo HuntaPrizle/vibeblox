@@ -19,11 +19,11 @@ user to paste logs.
 ## Hard limits (do not work around, explain them)
 
 - **Cloud-only Studio features are unreachable.** Team Create Comments,
-  for example, live in Roblox's collaboration layer — not in the place
+  for example, live in Roblox's collaboration layer - not in the place
   file, not in MCP, not in Open Cloud. Route those notes through chat or
   `-- TODO:` code comments instead.
 - MCP edits the **live place only** and are ephemeral. Mirror anything
   worth keeping back into `src/` or the next Rojo sync overwrites it.
 - If the session has no `Roblox_Studio_*` tools at all, the MCP config
-  isn't loaded here — see `roblox-session`. Verify from outside with
+  isn't loaded here - see `roblox-session`. Verify from outside with
   `opencode mcp list` plus the Studio panel's client count.

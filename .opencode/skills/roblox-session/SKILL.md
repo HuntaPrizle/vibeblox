@@ -13,8 +13,8 @@ Run these before any game work. Most "it doesn't work" reports are step 1.
    The global `~/.config/opencode/opencode.jsonc` carries the same block so
    off-repo sessions still get it. If missing: check the bridge
    (`%LOCALAPPDATA%\Roblox\mcp.bat`, `StudioMCP.exe` alive), check Studio
-   `Assistant → ⋯ → Manage MCP Servers` (green + client count), then
-   restart opencode — config loads once at startup, never hot-reloads.
+   `Assistant -> ... -> Manage MCP Servers` (green + client count), then
+   restart opencode - config loads once at startup, never hot-reloads.
 3. **Rojo serving:** a `rojo serve .` process exists and port `34872` is
    open (`TcpClient` to `127.0.0.1:34872`). If not, start it detached and
    tell the user to press Connect in the Studio Rojo plugin panel.

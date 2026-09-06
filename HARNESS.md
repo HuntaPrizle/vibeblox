@@ -1,4 +1,4 @@
-# HARNESS.md — first-run self-configuration
+# HARNESS.md - first-run self-configuration
 
 If you are an AI coding harness opening this repo for the first time, use
 this file to configure yourself from the repo's universal sources. The
@@ -7,18 +7,18 @@ implementation. Create your native equivalents, verify, report.
 
 ## 0. Read first (all harnesses)
 
-- `AGENTS.md` — project rules, quality gate, commands. Obey it.
-- `.opencode/skills/*/SKILL.md` — standard Agent Skills format (`name` +
+- `AGENTS.md` - project rules, quality gate, commands. Obey it.
+- `.opencode/skills/*/SKILL.md` - standard Agent Skills format (`name` +
   `description` frontmatter). Load them as skills natively; do not convert.
 
 ## 1. Wire the Studio MCP bridge
 
-Source of truth: `opencode.json` → `mcp.Roblox_Studio`. The bridge is a
+Source of truth: `opencode.json` -> `mcp.Roblox_Studio`. The bridge is a
 stdio server; only the wrapper differs per harness.
 
-**opencode** — native, already committed. Verify: `opencode mcp list`.
+**opencode** - native, already committed. Verify: `opencode mcp list`.
 
-**Claude Code** — create `.mcp.json` at repo root (project scope, commit
+**Claude Code** - create `.mcp.json` at repo root (project scope, commit
 it so the team shares it):
 
 ```json
@@ -36,7 +36,7 @@ it so the team shares it):
 (`type: stdio` is required by Claude Code; `${VAR}` expands at
 connection time.) Verify: `claude mcp list`.
 
-**Cursor / Claude Desktop / others** — same entry in the standard
+**Cursor / Claude Desktop / others** - same entry in the standard
 `mcpServers` shape (`command` + `args`, no `type` needed):
 
 ```json
@@ -51,14 +51,14 @@ connection time.) Verify: `claude mcp list`.
 ```
 
 (`cmd.exe` expands `%VAR%` itself.) Then follow your harness's normal
-restart/reload step — MCP configs load once at startup, never hot-reload.
+restart/reload step - MCP configs load once at startup, never hot-reload.
 
 ## 2. Create the `/check` command
 
 Source of truth: `.opencode/commands/check.md`. Mirror its body into your
 harness's native command file (e.g. Claude Code:
 `.claude/commands/check.md` with the same `description` frontmatter).
-Keep the step list identical — one gate, every harness.
+Keep the step list identical - one gate, every harness.
 
 ## 3. Verify the environment
 
@@ -71,7 +71,7 @@ stylua --check src/
 rojo build -o game.rbxlx
 ```
 
-All five must pass. If a tool is missing, `rokit install` is the fix —
+All five must pass. If a tool is missing, `rokit install` is the fix -
 never install the tools by other means (versions are pinned in
 `rokit.toml`).
 
@@ -80,4 +80,4 @@ never install the tools by other means (versions are pinned in
 Tell the user which native files you created (e.g. `.mcp.json`,
 `.claude/commands/`). Commit project-scope files only when asked.
 Formatting/LSP for editors is already universal via
-`.vscode/settings.json` — do not duplicate it per harness.
+`.vscode/settings.json` - do not duplicate it per harness.

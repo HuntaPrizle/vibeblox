@@ -15,17 +15,17 @@ Domain skills (load the one you need, this file stays the index):
 ## Session startup
 
 Run the `roblox-session` checklist before any game work. Do not duplicate
-it here — that file is the single home for startup/troubleshooting steps.
+it here - that file is the single home for startup/troubleshooting steps.
 
 ## Making changes
 
 - Server: `src/ServerScriptService/*.server.luau`.
-  Shared: `src/ReplicatedStorage/*.luau` (no `GetService` at require time —
+  Shared: `src/ReplicatedStorage/*.luau` (no `GetService` at require time -
   lune imports these). Client: `src/StarterPlayerScripts/*.client.luau`.
 - Every save auto-syncs into the open Studio place via `rojo serve`
   (~1s). User just presses Play. Never ask the user to copy files.
 - Mirror anything worth keeping from the live place back into `src/`;
-  sync is one-way files → Studio and overwrites place-side tweaks.
+  sync is one-way files -> Studio and overwrites place-side tweaks.
 
 ## Quality gate (all must pass after each change)
 
@@ -34,7 +34,7 @@ step list here.
 
 ## luau-lsp strict quirks
 
-Canonical list lives in `AGENTS.md` Rules — follow it, do not duplicate
+Canonical list lives in `AGENTS.md` Rules - follow it, do not duplicate
 it here.
 
 ## Notes for the user, not the repo
@@ -42,5 +42,5 @@ it here.
 - Global `~/.config/opencode/opencode.jsonc` carries the `Roblox_Studio`
   MCP block so every session on this machine gets it regardless of cwd.
 - If a Studio feature lives only in the cloud layer (e.g. Team Create
-  Comments), it is unreachable via Rojo/MCP/Open Cloud — say so, and route
+  Comments), it is unreachable via Rojo/MCP/Open Cloud - say so, and route
   notes through chat or `-- TODO:` code comments instead.

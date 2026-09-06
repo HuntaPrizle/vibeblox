@@ -17,16 +17,16 @@ Project file `default.project.json` maps `src/ServerScriptService`,
   Connect (defaults to `localhost:34872`).
 - If edits stop appearing: check the serve process, check the port, check
   the plugin still shows connected. Restart the server with
-  `rojo serve .` — never ask the user to copy files.
+  `rojo serve .` - never ask the user to copy files.
 
 ## One-way rule
 
-Sync flows files → Studio. Place-side tweaks get overwritten on the next
+Sync flows files -> Studio. Place-side tweaks get overwritten on the next
 sync. If the user changed something directly in Studio worth keeping, port
 it into `src/` immediately and say so.
 
 ## Artifacts
 
-- `rojo build -o game.rbxlx` — snapshot artifact for opening/publishing.
-- `rojo sourcemap default.project.json -o sourcemap.json` — feeds the
+- `rojo build -o game.rbxlx` - snapshot artifact for opening/publishing.
+- `rojo sourcemap default.project.json -o sourcemap.json` - feeds the
   typechecker. Both are gitignored build outputs, never commit them.
