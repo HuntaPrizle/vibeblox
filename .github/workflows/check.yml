@@ -6,10 +6,10 @@ on:
 
 jobs:
   gate:
-    runs-on: windows-latest
-    defaults:
-      run:
-        shell: pwsh
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - name: Setup Rokit
@@ -18,8 +18,4 @@ jobs:
           cache: true
       # NB: no separate `rokit install` - setup-rokit already installs
       # all rokit.toml tools (it passes --no-trust-check internally).
-      - run: lune run tests/run.luau
-      - run: rojo sourcemap default.project.json -o sourcemap.json
-      - run: luau-lsp analyze --sourcemap sourcemap.json "--definitions:typedefs/globalTypes.PluginSecurity.d.luau" src/
-      - run: stylua --check src/ tests/
-      - run: rojo build -o game.rbxlx
+      - run: lune run scripts/check.luau
