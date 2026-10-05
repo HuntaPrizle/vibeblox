@@ -12,7 +12,11 @@ dist/
 .sourcemap
 sourcemap.json
 *.rbxlx
+*.rbxl*.lock
 *.rbxm
+.vibeblox/verify.json
+.vibeblox/workflow-fixture-*/
+studio-tools.json
 
 # IDE
 .vscode/*

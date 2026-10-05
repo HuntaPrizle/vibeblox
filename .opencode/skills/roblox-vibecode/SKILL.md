@@ -1,46 +1,21 @@
 ---
 name: roblox-vibecode
-description: Use when working on this Roblox game with Rojo, Studio MCP, or Luau files. Session startup checklist, live-sync loop, and quality gate.
+description: Use when changing this Luau project through files, Rojo, or Studio MCP.
 ---
 
-# Roblox Vibecode
+# Roblox workflow
 
-Repo agent for this Rojo + Luau project. `src/` is the source of truth;
-Studio is a live view, never the other way around.
+Start with `roblox-session`. Follow `AGENTS.md` for architecture and strict
+typing. Domain skills: `roblox-mcp`, `roblox-rojo`, `roblox-lune`,
+`roblox-datastore`, `roblox-marketplace`, and `roblox-git`.
 
-Domain skills (load the one you need, this file stays the index):
-`roblox-session`, `roblox-mcp`, `roblox-rojo`, `roblox-lune`,
-`roblox-datastore`, `roblox-marketplace`, `roblox-git`.
-
-## Session startup
-
-Run the `roblox-session` checklist before any game work. Do not duplicate
-it here - that file is the single home for startup/troubleshooting steps.
-
-## Making changes
-
-- Server: `src/ServerScriptService/*.server.luau`.
-  Shared: `src/ReplicatedStorage/*.luau` (no `GetService` at require time -
-  lune imports these). Client: `src/StarterPlayerScripts/*.client.luau`.
-- Every save auto-syncs into the open Studio place via `rojo serve`
-  (~1s). User just presses Play. Never ask the user to copy files.
-- Mirror anything worth keeping from the live place back into `src/`;
-  sync is one-way files -> Studio and overwrites place-side tweaks.
-
-## Quality gate (all must pass after each change)
-
-Run `/check` (repo `.opencode/commands/check.md`). Do not duplicate the
-step list here.
-
-## luau-lsp strict quirks
-
-Canonical list lives in `AGENTS.md` Rules - follow it, do not duplicate
-it here.
-
-## Notes for the user, not the repo
-
-- Global `~/.config/opencode/opencode.jsonc` carries the `Roblox_Studio`
-  MCP block so every session on this machine gets it regardless of cwd.
-- If a Studio feature lives only in the cloud layer (e.g. Team Create
-  Comments), it is unreachable via Rojo/MCP/Open Cloud - say so, and route
-  notes through chat or `-- TODO:` code comments instead.
+- Edit mapped scripts in `src/`; Rojo syncs file saves to the connected
+  place. Preserve Studio edits using `docs/studio-ownership.md`.
+- Run `lune run scripts/check.luau` or `/check` after changes. The runner
+  owns the step list; the commit hook is only its fast subset.
+- Verify gameplay with Studio assertions and logs. The optional example
+  uses `lune run scripts/verify.luau --studio <id>` or `/verify`.
+- Report passed/failed/unavailable from the current verification report.
+  Static checks and mock MCP fixtures do not prove a live game works.
+- Persistence settings and profile defaults are scaffolding, not a save
+  implementation. Do not claim absent modules or systems are implemented.

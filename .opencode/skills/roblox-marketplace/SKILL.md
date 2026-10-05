@@ -11,6 +11,10 @@ tools. No web scraping - use `search_asset` to find, `insert_asset` to place.
 Tools (names vary slightly by client - `Roblox_Studio_search_asset` /
 `search_asset`, `Roblox_Studio_insert_asset` / `insert_asset`):
 
+First discover tools, inspect the current schemas, and select the intended
+`studio_id` using `list_roblox_studios`. The examples below are illustrative;
+adapt to the installed schemas, including any required datamodel argument.
+
 - `search_asset`: keyword search across Creator Store + inventories.
 - `insert_asset`: insert by numeric `assetId` into the open Studio place.
 
@@ -29,12 +33,13 @@ Tools (names vary slightly by client - `Roblox_Studio_search_asset` /
     - `assetId: 12345678`, `assetName: "CastleTower"`,
      `assetType: "Model"`, `parentPath: "game.Workspace.Props"`
    - Omit `parentPath` only to drop into `Workspace` root.
-5. Verify: `GameTree(path: "Workspace.Props")` or `InspectInstance`,
+5. Verify with the current `search_game_tree` or `inspect_instance` schema,
    plus `screen_capture` if placement/scale matters.
 6. Persist: MCP inserts hit the **live place only**. Mirror anything worth
-   keeping - record the `assetId` + `parentPath` in `src/` (e.g. a shared
-   config or server script that inserts/loads it) or the next Rojo sync
-   overwrites it. See `roblox-rojo`, `roblox-mcp`.
+   keeping according to `docs/studio-ownership.md`. Record asset ID and
+   provenance, export supported models to mapped files, and verify a fresh
+   build. A recorded ID alone does not recreate an instance. Do not assume
+   runtime insertion is supported for every asset type.
 
 ## Search scopes
 

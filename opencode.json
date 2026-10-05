@@ -3,7 +3,7 @@
   "mcp": {
     "Roblox_Studio": {
       "type": "local",
-      "command": ["cmd.exe", "/c", "\"%LOCALAPPDATA%\\Roblox\\mcp.bat\""],
+      "command": ["lune", "run", "scripts/studio-mcp.luau"],
       "enabled": true
     }
   },

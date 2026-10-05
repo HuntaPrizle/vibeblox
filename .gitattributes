@@ -1,7 +1,9 @@
 # Normalize line endings: Luau sources are always LF so stylua
 # (line_endings = "Unix") passes on Windows checkouts too.
-* text=auto
+* text=auto eol=lf
 *.luau text eol=lf
 *.toml text eol=lf
 *.json text eol=lf
 *.md text eol=lf
+*.yml text eol=lf
+.githooks/* text eol=lf

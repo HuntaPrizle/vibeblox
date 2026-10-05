@@ -1,32 +1,24 @@
 ---
 name: roblox-rojo
-description: Use when syncing code to Studio, when edits don't appear in the open place, or when building game.rbxlx. Rojo live-sync, builds, and the one-way sync rule.
+description: Use for file-to-Studio sync, mapping, builds, and preserving Studio changes.
 ---
 
 # Rojo
 
-Project file `default.project.json` maps `src/ServerScriptService`,
-`src/ReplicatedStorage`, `src/StarterPlayerScripts`, `src/Workspace`
-(`servePort 34872`).
+`default.project.json` maps server, shared, client, and Workspace files in
+`src/`. Live-sync: `rojo serve .`, then connect the Studio plugin to port
+`34872`. Keep one server per project; confirm the plugin targets it.
 
-## Live-sync (the normal loop)
+Files are the default source of truth. Studio edits are not automatically
+preserved in Git. Follow `docs/studio-ownership.md` for script capture,
+XML model export, checkpoints, and recovery. Do not assume every live-place
+edit is overwritten or included in a fresh build: ownership depends on
+the mapping and supported properties.
 
-- `rojo serve .` runs detached on the dev machine; every save lands in the
-  open Studio place within ~1s. The user only presses Play.
-- One-time per Studio install: install the Rojo plugin (rojo-rbx) and press
-  Connect (defaults to `localhost:34872`).
-- If edits stop appearing: check the serve process, check the port, check
-  the plugin still shows connected. Restart the server with
-  `rojo serve .` - never ask the user to copy files.
+The pinned Rojo version's reverse-sync features are not enabled by this
+template. Do not switch sync strategies silently.
 
-## One-way rule
-
-Sync flows files -> Studio. Place-side tweaks get overwritten on the next
-sync. If the user changed something directly in Studio worth keeping, port
-it into `src/` immediately and say so.
-
-## Artifacts
-
-- `rojo build -o game.rbxlx` - snapshot artifact for opening/publishing.
-- `rojo sourcemap default.project.json -o sourcemap.json` - feeds the
-  typechecker. Both are gitignored build outputs, never commit them.
+Build with `rojo build -o game.rbxlx`; sourcemaps feed the typechecker.
+Both outputs are ignored. The canonical runner performs these steps.
+A generated build contains only declared source; save Studio-owned
+terrain/assets/settings separately and document release steps.
