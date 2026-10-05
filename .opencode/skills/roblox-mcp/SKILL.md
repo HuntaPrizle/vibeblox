@@ -1,29 +1,29 @@
 ---
 name: roblox-mcp
-description: Use when inspecting the live Studio place, debugging Play sessions, or troubleshooting the Roblox Studio MCP connection. What MCP reaches and its hard limits.
+description: Use when inspecting Studio, debugging Play sessions, or diagnosing the built-in MCP connection.
 ---
 
 # Roblox Studio MCP
 
-Stdio bridge: opencode spawns
-`cmd.exe /c "%LOCALAPPDATA%\Roblox\mcp.bat"`, which talks to
-`StudioMCP.exe`, which talks to Studio. Defined in the repo `opencode.json`
-and mirrored in the global `~/.config/opencode/opencode.jsonc`.
+Project configuration uses the portable `scripts/studio-mcp.luau` relay.
+No global OpenCode configuration is required. See `HARNESS.md` for native
+client adapters and Windows/macOS launchers.
 
-## What it reaches
+1. Discover tools and inspect their input schemas in the current session.
+2. Call `list_roblox_studios`, select the intended instance, and pass its
+   `studio_id` to all subsequent calls.
+3. Use `get_studio_state` to select an available Edit/Client/Server
+   datamodel. Common tools: `execute_luau`, `start_stop_play`,
+   `get_console_output`, `search_game_tree`, and `inspect_instance`.
+4. Use the doctor with `--studio` to independently check the bridge, or
+   `--tools` to save current schemas. A working CLI connection does not
+   guarantee the agent client's MCP config loaded.
 
-Game tree, script contents, Play-mode console output, running Luau in play
-mode. Use it to inspect the live session and diagnose without asking the
-user to paste logs.
+Live-place edits are not automatically written back to project files.
+Preserve them using `docs/studio-ownership.md`. Mapped changes may be
+overwritten; unmapped changes may be absent from a fresh build.
+For a cloud-only feature, first check the current tools/API documentation;
+if unsupported, explain the limitation and keep notes in chat or source.
 
-## Hard limits (do not work around, explain them)
-
-- **Cloud-only Studio features are unreachable.** Team Create Comments,
-  for example, live in Roblox's collaboration layer - not in the place
-  file, not in MCP, not in Open Cloud. Route those notes through chat or
-  `-- TODO:` code comments instead.
-- MCP edits the **live place only** and are ephemeral. Mirror anything
-  worth keeping back into `src/` or the next Rojo sync overwrites it.
-- If the session has no `Roblox_Studio_*` tools at all, the MCP config
-  isn't loaded here - see `roblox-session`. Verify from outside with
-  `opencode mcp list` plus the Studio panel's client count.
+Run the example verifier only on the intended idle place. Unavailable
+verification is never a pass. See `docs/verification.md`.

@@ -6,6 +6,7 @@ local options = Project.options(process.args, {}, { "--fast" })
 
 local steps = {
 	{ "Unit tests", "lune", { "run", "tests/run.luau" } },
+	{ "Workflow tests", "lune", { "run", "tests/workflow.luau" } },
 	{ "Formatting", "stylua", { "--check", "src/", "tests/", "scripts/" } },
 }
 if not options["--fast"] then

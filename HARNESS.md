@@ -1,83 +1,86 @@
-# HARNESS.md - first-run self-configuration
+# HARNESS.md - first-run agent configuration
 
-If you are an AI coding harness opening this repo for the first time, use
-this file to configure yourself from the repo's universal sources. The
-repo is harness-agnostic; `opencode.json` is just the reference
-implementation. Create your native equivalents, verify, report.
+Read `AGENTS.md` and load `.opencode/skills/*/SKILL.md` using your client's
+native Agent Skills support. Project rules and executable commands are
+shared; `opencode.json` is the reference client configuration.
 
-## 0. Read first (all harnesses)
+## 1. Install and check the pinned environment
 
-- `AGENTS.md` - project rules, quality gate, commands. Obey it.
-- `.opencode/skills/*/SKILL.md` - standard Agent Skills format (`name` +
-  `description` frontmatter). Load them as skills natively; do not convert.
+From the project root, run:
 
-## 1. Wire the Studio MCP bridge
+```text
+rokit install
+lune run scripts/doctor.luau
+lune run scripts/check.luau
+```
 
-Source of truth: `opencode.json` -> `mcp.Roblox_Studio`. The bridge is a
-stdio server; only the wrapper differs per harness.
+The runner is the single source of truth. It checks pure logic, workflow
+behavior, formatting (including tests and scripts), types, and the place
+build. For missing tools use `rokit install`, not separate versions.
+Studio verification is a separate command.
 
-**opencode** - native, already committed. Verify: `opencode mcp list`.
+## 2. Connect the built-in Studio MCP server
 
-**Claude Code** - create `.mcp.json` at repo root (project scope, commit
-it so the team shares it):
+Open Assistant -> ... -> Manage MCP Servers and enable Studio as an MCP
+server. Prefer Studio's Quick connect for supported clients. Follow the
+current [Roblox MCP documentation](https://create.roblox.com/docs/studio/mcp);
+the old standalone Rust server is not required.
+
+OpenCode already launches `lune run scripts/studio-mcp.luau`. This portable
+relay finds the installed Windows or macOS Studio launcher. Run the client
+from the project root with Rokit shims on PATH. No global OpenCode config
+is required. Verify with `opencode mcp list`.
+
+For Claude Code, use a project `.mcp.json`:
 
 ```json
 {
   "mcpServers": {
     "Roblox_Studio": {
       "type": "stdio",
-      "command": "cmd.exe",
-      "args": ["/c", "${LOCALAPPDATA}\\Roblox\\mcp.bat"]
+      "command": "lune",
+      "args": ["run", "scripts/studio-mcp.luau"]
     }
   }
 }
 ```
 
-(`type: stdio` is required by Claude Code; `${VAR}` expands at
-connection time.) Verify: `claude mcp list`.
+For Cursor, use the same entry in `.cursor/mcp.json` (omit `type` if the
+client doesn't use it). Other clients should register this stdio command
+in their native configuration. If the server starts outside the repo, use
+Studio's native launcher instead:
 
-**Cursor / Claude Desktop / others** - same entry in the standard
-`mcpServers` shape (`command` + `args`, no `type` needed):
+| Platform | Command | Arguments |
+| --- | --- | --- |
+| Windows | `cmd.exe` | `/c`, `%LOCALAPPDATA%\Roblox\mcp.bat` |
+| macOS | `/Applications/RobloxStudio.app/Contents/MacOS/StudioMCP` | none |
 
-```json
-{
-  "mcpServers": {
-    "Roblox_Studio": {
-      "command": "cmd.exe",
-      "args": ["/c", "%LOCALAPPDATA%\\Roblox\\mcp.bat"]
-    }
-  }
-}
-```
+Client config shapes differ. Use Quick connect or the client's supported
+configuration rather than assuming all clients accept Claude's JSON.
+Report the adapter files you create. Keep changes project-scoped and
+reload/restart the client after updating its MCP configuration.
 
-(`cmd.exe` expands `%VAR%` itself.) Then follow your harness's normal
-restart/reload step - MCP configs load once at startup, never hot-reload.
+## 3. Verify tools and select the intended place
 
-## 2. Create the `/check` command
+Run `lune run scripts/doctor.luau --studio` to check the installed bridge.
+Use `--tools` to save current schemas to ignored `studio-tools.json`.
+This check is independent of your agent client's connection: also confirm
+tools are exposed in the current agent session.
 
-Source of truth: `.opencode/commands/check.md`. Mirror its body into your
-harness's native command file (e.g. Claude Code:
-`.claude/commands/check.md` with the same `description` frontmatter).
-Keep the step list identical - one gate, every harness.
+Call `list_roblox_studios`, choose the intended instance by name/place, and
+pass its `studio_id` to subsequent calls. Never choose arbitrarily when
+several are open. Inspect current schemas before calling tools. Common
+tools include `get_studio_state`, `execute_luau` (Edit/Client/Server),
+`start_stop_play`, and `get_console_output`; availability can change.
 
-## 3. Verify the environment
+## 4. Native commands and gameplay verification
 
-```powershell
-rokit install
-lune run tests/run.luau
-rojo sourcemap default.project.json -o sourcemap.json
-luau-lsp analyze --sourcemap sourcemap.json "--definitions:typedefs/globalTypes.PluginSecurity.d.luau" src/
-stylua --check src/
-rojo build -o game.rbxlx
-```
+Mirror `.opencode/commands/check.md` into your client's native command
+format. Its body calls the shared runner; do not duplicate its step list.
+Mirror `verify.md` similarly if the client supports slash commands.
 
-All five must pass. If a tool is missing, `rokit install` is the fix -
-never install the tools by other means (versions are pinned in
-`rokit.toml`).
-
-## 4. Report, don't commit harness files silently
-
-Tell the user which native files you created (e.g. `.mcp.json`,
-`.claude/commands/`). Commit project-scope files only when asked.
-Formatting/LSP for editors is already universal via
-`.vscode/settings.json` - do not duplicate it per harness.
+For the optional example, connect Rojo or open the freshly built place,
+then run `lune run scripts/verify.luau --studio <id>`.
+Read `docs/verification.md` for criteria, statuses, negative controls, and
+cleanup. Unavailable verification is not a pass. Add game-specific
+scenarios as the project grows.

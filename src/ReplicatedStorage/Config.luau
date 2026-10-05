@@ -13,7 +13,10 @@ local Config = {}
 
 Config.GameName = "MYGAME"
 
--- Persistence (DataStore "MYGAME_Save_v1", key "Player_<UserId>")
+-- Optional session-only example; scripts/verify.luau enables it temporarily in Studio.
+Config.SmokeExampleEnabled = false
+
+-- Persistence settings only: this starter does not load or save player data.
 Config.SaveVersion = 1
 Config.DataStoreName = "MYGAME_Save_v1"
 Config.AutosaveSeconds = 60

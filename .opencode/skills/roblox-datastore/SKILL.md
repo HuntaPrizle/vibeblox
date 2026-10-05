@@ -1,24 +1,28 @@
 ---
 name: roblox-datastore
-description: Use when changing saved player data, bumping the save version, debugging lost progress, or inspecting DataStore contents. Save conventions for this game.
+description: Use when implementing or changing persistence, save migrations, or debugging lost progress.
 ---
 
-# DataStore
+# Persistence
 
-- Store: `Config.DataStoreName` (e.g. `MYGAME_Save_v1`). Key: `Player_<UserId>`.
-- Payload: flat `{ [string]: number }` plus `v = SaveVersion`. Numbers
-  only, currency fields floored on write. Serde lives in the shared
-  `SaveData` module (service-free, Lune-tested) - never inline new save
-  fields in the server script.
-- Flow: load on join (async, fresh profile shown first, validated swap-in),
-  autosave every `Config.AutosaveSeconds`, save on leave, save-all on
-  `BindToClose`. All store calls are `pcall` + retries; on total failure
-  the game plays session-only with one warning, nothing breaks.
-- **Persistence requires Studio `Game Settings -> Security -> Enable Studio
-  Access to API Services`** for Play-Solo saves. If the client's `Saved`
-  timestamp never appears, that toggle is the first suspect.
-- Inspect live data with the free **DataDelve** or **DataScope** plugins
-  (sleitnick's DataStore Editor is paid - don't recommend it as free).
-- **Versioning:** changing the payload shape means bumping
-  `Config.SaveVersion`. Old/wrong-version data is rejected and the player
-  starts fresh - say so explicitly when proposing shape changes.
+This starter currently implements profile defaults and settings only.
+There is no SaveData module, load/autosave lifecycle, or persistence test.
+
+When adding persistence:
+
+- Use `Config.DataStoreName` and versioned payloads. Give each game a unique
+  namespace with initialization; don't share the template namespace.
+- Separate pure validation/serialization from service calls and Lune-test
+  it. Validate loaded data before changing the active profile.
+- Define migrations explicitly. Do not silently reject old data and reset
+  progress when bumping a version.
+- Handle load/save failures, retries, leave, and shutdown. Never overwrite
+  existing data with defaults after a failed load. Use concurrency/session
+  protection appropriate to the game's needs.
+- Studio tests accessing DataStores require Studio API access. Use separate
+  test stores and explicitly document cloud mutations.
+- Add Studio scenarios for persistence; the starter smoke test checks only
+  a session-only reward and HUD, with no cloud access.
+
+Describe remaining work accurately; do not present these recommendations
+as already implemented behavior.
